@@ -13,5 +13,27 @@ pipeline {
                 }
             }
         }
+        stage('Test') {
+            steps {
+                script {
+                    sh "make build-test"
+                    sh "make test-unit"
+                }
+            }
+        }
+        stage('List of content') {
+            steps {
+                script {
+                    sh "ls"
+                }
+            }
+        }
+        stage('Build the final Docker image') {
+            steps {
+                script {
+                    sh "  make build"
+                }
+            }
+        }
     }
 }
