@@ -1,8 +1,9 @@
 pipeline {
     agent any
     environment {
-        DOCKER_IMAGE = 'node-todo-app'
-        EC2_HOST = 'ec2-16-16-143-151.eu-north-1.compute.amazonaws.com'
+        DOCKER_IMAGE = 'golang-app'
+        DOCKER_TAG = 
+        EC2_HOST = 'ec2-16-170-37-245.eu-north-1.compute.amazonaws.com'
         EC2_USER = 'ubuntu'
     }
     stages {
@@ -13,14 +14,14 @@ pipeline {
                 }
             }
         }
-        stage('Test') {
-            steps {
-                script {
-                    // sh "make build-test"
-                    // sh "make test-unit"
-                }
-            }
-        }
+        // stage('Test') {
+        //     steps {
+        //         script {
+        //             sh "make build-test"
+        //             sh "make test-unit"
+        //         }
+        //     }
+        // }
         stage('List of content') {
             steps {
                 script {
