@@ -2,7 +2,6 @@ pipeline {
     agent any
     environment {
         DOCKER_IMAGE = 'golang-app'
-        DOCKER_TAG = 
         EC2_HOST = 'ec2-16-170-37-245.eu-north-1.compute.amazonaws.com'
         EC2_USER = 'ubuntu'
     }
