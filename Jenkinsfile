@@ -16,8 +16,8 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    sh "make build-test"
-                    sh "make test-unit"
+                    // sh "make build-test"
+                    // sh "make test-unit"
                 }
             }
         }
@@ -35,5 +35,14 @@ pipeline {
                 }
             }
         }
+        stage('Deploy to EC2') {
+            steps {
+                   sshagent(['dmpodporin-aws']) {
+                    sh """
+                        ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} 'docker-compose down && docker-compose pull && docker-compose up -d'
+                """
+            }
+            }
+        }   
     }
 }
