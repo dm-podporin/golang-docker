@@ -49,9 +49,7 @@ pipeline {
                     }
 
                     runCommandOnEC2(
-                        """
                         sudo apt-get -y update
-                        """
                     )
                 }
             }
