@@ -42,7 +42,8 @@ pipeline {
                 }
             }
         }
-        stage('Docker Install') {
+
+        stage('Docker Instal') {
             steps {
                 sshagent(['dmpodporin-aws']) {
                     script{
@@ -58,25 +59,16 @@ pipeline {
             }
             }
         }
-        stage('Docker Install') {
+        stage('Copy application files to the EC2 instance') {
             steps {
                 sshagent(['dmpodporin-aws']) {
-                    script{
-                    runCommandOnEC2(
-                        """
-                        sudo apt-get remove docker docker-engine docker.io containerd runc           
-                        sudo apt-get update
-                        sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-                        sudo docker run hello-world               
-                        """
-                    )
+                    sh """
+                    scp -o StrictHostKeyChecking=no -r ${WORKSPACE}/  ubuntu@${ec2_instanse}:/home/ubuntu/golang-app/
+                    ssh -o StrictHostKeyChecking=no ubuntu@${ec2_instanse} 'cd /home/ubuntu/golang-app/GOLANG/ && sudo make build-base && sudo make build && sudo make run'
+                    """
                 }
             }
-            }
         }
-
-
-
 
     }
 }
