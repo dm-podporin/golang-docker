@@ -39,6 +39,7 @@ pipeline {
         stage('Deploy to EC2') {
             steps {
                 sshagent(['dmpodporin-aws']) {
+                    script{
                     def runCommandOnEC2 = { cmd ->
                         sh """
                         ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST}  << EOF
@@ -53,6 +54,7 @@ pipeline {
                         sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
                         """
                     )
+                    }
             }
             }
         }   
