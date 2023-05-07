@@ -73,27 +73,27 @@ pipeline {
                 }
             }
         }
-        stage('Copy files to EC2') {
-            steps {
-                sshagent(['dmpodporin-aws']) {
-                    sh """
-                    scp -o StrictHostKeyChecking=no -r ${WORKSPACE}/  ubuntu@${ec2_instanse}:/home/ubuntu/golang-app/
-                    """
-                }
-            }
-        }
-        stage('EC2 build and run') {
-            steps {
-                sshagent(['dmpodporin-aws']) {
-                    script{
-                    runCommandOnEC2(
-                        """
-                        cd /home/ubuntu/golang-app/GOLANG/ && sudo make build-base && sudo make build && sudo make run'
-                        """
-                    )}
-                }
-            }
-        }
+        // stage('Copy files to EC2') {
+        //     steps {
+        //         sshagent(['dmpodporin-aws']) {
+        //             sh """
+        //             scp -o StrictHostKeyChecking=no -r ${WORKSPACE}/  ubuntu@${ec2_instanse}:/home/ubuntu/golang-app/
+        //             """
+        //         }
+        //     }
+        // }
+        // stage('EC2 build and run') {
+        //     steps {
+        //         sshagent(['dmpodporin-aws']) {
+        //             script{
+        //             runCommandOnEC2(
+        //                 """
+        //                 cd /home/ubuntu/golang-app/GOLANG/ && sudo make build-base && sudo make build && sudo make run'
+        //                 """
+        //             )}
+        //         }
+        //     }
+        // }
 
     }
 }
