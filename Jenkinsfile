@@ -38,16 +38,15 @@ pipeline {
         }
         stage('Deploy to EC2') {
             steps {
-                script{
+                sshagent(['dmpodporin-aws']) {
                     def runCommandOnEC2 = { cmd ->
                         sh """
                         ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST}  << EOF
                         '${cmd}'
                         EOF
                         """
-                        }
-                }
-                   sshagent(['dmpodporin-aws']) {
+                    }
+
                     runCommandOnEC2(
                         """
                         sudo apt-get -y update
