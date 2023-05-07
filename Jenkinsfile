@@ -54,9 +54,8 @@ pipeline {
                         sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
                         sudo docker run hello-world                   
                         """
-                    )
+                    )}
                 }
-            }
             }
         }
         stage('Copy application files to the EC2 instance') {
@@ -68,6 +67,17 @@ pipeline {
                 }
             }
         }
-
+        stage('Build and run Docker on EC2 instance') {
+            steps {
+                sshagent(['dmpodporin-aws']) {
+                    script{
+                    runCommandOnEC2(
+                        """
+                        cd /home/ubuntu/golang-app/GOLANG/ && sudo make build-base && sudo make build && sudo make run
+                        """
+                    )}
+                }
+            }
+        }
     }
 }
