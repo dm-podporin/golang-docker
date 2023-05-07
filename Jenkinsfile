@@ -1,3 +1,9 @@
+def runCommandOnEC2 = { cmd ->
+    sh """
+    ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} '${cmd}'
+    """
+}
+
 pipeline {
     agent any
     environment {
@@ -7,13 +13,6 @@ pipeline {
     }
 
     stages {
-
-        def runCommandOnEC2 = { cmd ->
-        sh """
-        ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} '${cmd}'
-        """
-        } 
-        
         stage('Build') {
             steps {
                 script {
@@ -47,7 +46,11 @@ pipeline {
             steps {
                 sshagent(['dmpodporin-aws']) {
                     script{
-                    
+                    // def runCommandOnEC2 = { cmd ->
+                    //     sh """
+                    //     ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} '${cmd}'
+                    //     """
+                    // }
 
                     runCommandOnEC2(
                         """
