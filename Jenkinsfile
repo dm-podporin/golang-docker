@@ -42,14 +42,14 @@ pipeline {
                     script{
                     def runCommandOnEC2 = { cmd ->
                         sh """
-                        ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST}  << EOF
-                        '${cmd}'
-                        EOF
+                        ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} '${cmd}'
                         """
                     }
 
                     runCommandOnEC2(
+                        """
                         sudo apt-get -y update
+                        """
                     )
                 }
             }
