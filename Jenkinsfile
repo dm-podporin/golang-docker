@@ -42,16 +42,10 @@ pipeline {
                 }
             }
         }
-        stage('Deploy to EC2') {
+        stage('Docker Install') {
             steps {
                 sshagent(['dmpodporin-aws']) {
                     script{
-                    // def runCommandOnEC2 = { cmd ->
-                    //     sh """
-                    //     ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} '${cmd}'
-                    //     """
-                    // }
-
                     runCommandOnEC2(
                         """
                         sudo apt-get remove docker docker-engine docker.io containerd runc           
@@ -63,6 +57,31 @@ pipeline {
                 }
             }
             }
-        }   
+        }
+        stage('Docker Install') {
+            steps {
+                sshagent(['dmpodporin-aws']) {
+                    script{
+                    runCommandOnEC2(
+                        """
+                        sudo apt-get remove docker docker-engine docker.io containerd runc           
+                        sudo apt-get update
+                        sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+                        sudo docker run hello-world               
+                        """
+                    )
+                }
+            }
+            }
+        }
+        stage('Docker Install') {
+            steps {
+                sshagent(['dmpodporin-aws']) {
+                    sh """
+                    scp -o StrictHostKeyChecking=no -r ${WORKSPACE}/  ubuntu@${ec2_instanse}:/home/ubuntu/golang-app/
+                    """
+                }
+            }
+        }
     }
 }
