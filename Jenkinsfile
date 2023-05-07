@@ -63,8 +63,7 @@ pipeline {
             steps {
                 sshagent(['dmpodporin-aws']) {
                     sh """
-                    scp -o StrictHostKeyChecking=no -r ${WORKSPACE}/  ubuntu@${ec2_instanse}:/home/ubuntu/golang-app/
-                    ssh -o StrictHostKeyChecking=no ubuntu@${ec2_instanse} 'cd /home/ubuntu/golang-app/GOLANG/ && sudo make build-base && sudo make build && sudo make run'
+                    scp -o StrictHostKeyChecking=no -r ${WORKSPACE}/  ${EC2_USER}@${EC2_HOST}:/home/ubuntu/golang-app/
                     """
                 }
             }
