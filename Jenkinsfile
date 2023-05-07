@@ -5,6 +5,15 @@ pipeline {
         EC2_HOST = 'ec2-13-50-242-196.eu-north-1.compute.amazonaws.com'
         EC2_USER = 'ubuntu'
     }
+
+    def runCommandOnEC2 = { cmd ->
+        sh """
+        ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST}  << EOF
+        '${cmd}'
+        EOF
+        """
+    }
+
     stages {
         stage('Build') {
             steps {
@@ -38,10 +47,12 @@ pipeline {
         stage('Deploy to EC2') {
             steps {
                    sshagent(['dmpodporin-aws']) {
-                    sh """
-                        ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} 'sudo apt-get -y update'
-                        ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} 'sudo apt install -y apt-transport-https ca-certificates curl software-properties-common'
-                """
+                    runCommandOnEC2(
+                        """
+                        sudo apt-get -y update
+                        sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
+                        """
+                    )
             }
             }
         }   
