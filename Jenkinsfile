@@ -49,6 +49,7 @@ pipeline {
                     runCommandOnEC2(
                         """
                         sudo apt-get -y update
+                        sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
                         """
                     )
                 }
