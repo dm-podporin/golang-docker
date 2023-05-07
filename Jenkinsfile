@@ -40,7 +40,7 @@ pipeline {
             steps {
                 sshagent(['dmpodporin-aws']) {
                     script{
-                    def runCommandOnEC2 = (cmd) {
+                    def runCommandOnEC2 = { cmd ->
                         sh """
                         ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST}  << EOF
                         '${cmd}'
@@ -51,10 +51,9 @@ pipeline {
                     runCommandOnEC2(
                         """
                         sudo apt-get -y update
-                        sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
                         """
                     )
-                    }
+                }
             }
             }
         }   
