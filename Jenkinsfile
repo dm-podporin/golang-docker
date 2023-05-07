@@ -41,11 +41,11 @@ pipeline {
                 sshagent(['dmpodporin-aws']) {
                     script{
                     def runCommandOnEC2 = { cmd ->
-                        sh """
+                        
                         ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST}  << EOF
                         '${cmd}'
                         EOF
-                        """
+                     
                     }
 
                     runCommandOnEC2(
