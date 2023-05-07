@@ -6,14 +6,6 @@ pipeline {
         EC2_USER = 'ubuntu'
     }
 
-    def runCommandOnEC2 = { cmd ->
-        sh """
-        ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST}  << EOF
-        '${cmd}'
-        EOF
-        """
-    }
-
     stages {
         stage('Build') {
             steps {
@@ -46,6 +38,15 @@ pipeline {
         }
         stage('Deploy to EC2') {
             steps {
+                script{
+                    def runCommandOnEC2 = { cmd ->
+                        sh """
+                        ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST}  << EOF
+                        '${cmd}'
+                        EOF
+                        """
+                        }
+                }
                    sshagent(['dmpodporin-aws']) {
                     runCommandOnEC2(
                         """
