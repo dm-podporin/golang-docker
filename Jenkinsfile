@@ -73,7 +73,7 @@ pipeline {
                     script{
                     runCommandOnEC2(
                         """
-                        cd /home/ubuntu/golang-app/GOLANG/ && sudo make build-base && sudo make build && sudo make run
+                        cd /home/ubuntu/golang-app/ && sudo make build-base && sudo make build && sudo make run
                         """
                     )}
                 }
